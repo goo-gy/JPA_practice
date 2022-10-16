@@ -5,25 +5,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "member")
+@TableGenerator(name="MEMBER_SEQ_GENERATOR",
+                table = "MY_SEQUENCES",
+                pkColumnValue = "MEMBER_SEQ",
+                allocationSize = 1)
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE,
+                    generator = "MEMBER_SEQ_GENERATOR")
     private Long id;
 
-    @Column(unique = true, length = 10)
+    @Column(nullable = false)
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    private LocalDate createLocalDate;
-    private LocalDateTime createLocalDateTime;
-
-    @Lob
-
-    public Long getId() {
-        return id;
-    }
 
     public Member() {
     }
@@ -33,10 +26,8 @@ public class Member {
         this.name = name;
     }
 
-    public Member(Long id, String name, Gender gender) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -49,13 +40,5 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 }
